@@ -2,9 +2,3 @@
 * [x] React
 * [x] Styled-Components
 * [x] @Rebass/grid
-
-
--------
-**Yeah！** *Cool* 
-
-* w
