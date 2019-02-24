@@ -1,85 +1,71 @@
-import React, { Component, Fragment } from 'react'
+import React, { Fragment } from 'react'
 import styled from 'styled-components'
 import posed  from 'react-pose'
+import { connect } from 'react-redux'
+import axios from 'axios'
+import { fromJS } from 'immutable'
+import uuidv4 from 'uuid/v4'
 
 //Components
 import { Flex, Box } from '@rebass/grid'
 
-class Header extends Component {
-	state = {
-		focused: false,
-	}
-
-	handleFocus = ()=>{
-		this.setState((prevState)=>(
-			{
-				focused: true
-			}
-		),()=>{
-			console.log(this.state.focused)
-		})
-	}
-	handleBlur = ()=>{
-		this.setState((prevState)=>(
-			{
-				focused: false
-			}
-		),()=>{
-			console.log(this.state.focused)
-		})
-	}
-
-	render(){
-		return(
-			<Fragment>
-				<HeaderWrapper width={1}>
-					<Nav mx='auto' width={[1,null,null,null,1440]} bg={'white'}>
-						<Brand width={[240,1/6]}>
-							<a href="https://jianshu.com">
-								<img src="https://cdn2.jianshu.io/assets/web/nav-logo-4c7bbafe27adc892f3046e6978459bac.png" alt=""/>
-							</a>
-						</Brand>
-						<Navbar width={[1,null,null,945]} bg={'white'}>
-							<ul>
-								<li className='active'><i className='iconfont'>&#xe642;</i>发现</li>
-								<li><i className='iconfont'>&#xe748;</i>关注</li>
-								<li><i className='iconfont'>&#xe613;</i>消息</li>
-							</ul>
-							<Search pl={4}>
-								<SearchBar width={[300]}>
-										<SearchBarPosed px={3} pose={ this.state.focused ? 'focused' : 'blured' }>
-											<input onFocus={ this.handleFocus } onBlur={ this.handleBlur } type="text" placeholder="搜索" />
-											<i className={ this.state.focused ? 'iconfont focused' : 'iconfont' }>&#xe60d;</i>
-										</SearchBarPosed>
-								</SearchBar>
-								<SearchInfo width={[250]}>
-									<SearchInfoTitle>
-										热门搜索
-										<SearchInfoSwitch><SpinAnimated className="iconfont">&#xe7ea;</SpinAnimated>换一批</SearchInfoSwitch>
-									</SearchInfoTitle>
-								</SearchInfo>
-							</Search>
-						</Navbar>
-						<Toolbar>
-							<i className='iconfont aa'>&#xe636;</i>
-							<Menu>
-								<Info>
-									<a className='avatar' href="#">
-										<img src="https://upload.jianshu.io/users/upload_avatars/6253669/6c55cdbc-6d12-49b1-b82a-6e4cccc81681?imageMogr2/auto-orient/strip|imageView2/1/w/120/h/120" alt=""/>
-									</a>
-									<a className='dropdown' href="#"></a>
-								</Info>
-							</Menu>
-							<a className='btn-write' href="#"><i className="iconfont">&#xe624;</i>写文章</a>
-						</Toolbar>
-					</Nav>
-				</HeaderWrapper>
-			</Fragment>
-		)
-	}
+const Header = (props)=>{
+	return(
+		<Fragment>
+			<HeaderWrapper width={1}>
+				<Nav mx='auto' width={[1,null,null,null,1440]} bg={'white'}>
+					<Brand width={[240,1/6]}>
+						<a href="https://jianshu.com">
+							<img src="https://cdn2.jianshu.io/assets/web/nav-logo-4c7bbafe27adc892f3046e6978459bac.png" alt=""/>
+						</a>
+					</Brand>
+					<Navbar width={[1,null,null,945]} bg={'white'}>
+						<ul>
+							<li className='active'><i className='iconfont'>&#xe642;</i>发现</li>
+							<li><i className='iconfont'>&#xe748;</i>关注</li>
+							<li><i className='iconfont'>&#xe613;</i>消息</li>
+						</ul>
+						<Search pl={4}>
+							<SearchBar width={[300]}>
+									<SearchBarPosed px={3} pose={ props.focused ? 'focused' : 'blured' }>
+										<input onFocus={ ()=>props.handleFocus(props.searchInfoItems) } onBlur={ props.handleBlur } type="text" placeholder="搜索" />
+										<i className={ props.focused ? 'iconfont focused' : 'iconfont' }>&#xe60d;</i>
+									</SearchBarPosed>
+							</SearchBar>
+							<SearchInfo onMouseEnter={ props.handleMouseEnter } onMouseLeave={ props.handleMouseLeave } width={[250]} pose={ props.focused || props.mouseEnter ? 'focused' : 'blured' }>
+								<SearchInfoTitle>
+									热门搜索
+									<SearchInfoSwitch
+									onClick={ props.handlePageChange }
+									><SpinAnimated className="iconfont">&#xe7ea;</SpinAnimated>换一批</SearchInfoSwitch>
+								</SearchInfoTitle>
+								<SearchInfoItem flexWrap='wrap'>
+									{props.searchInfoItems.map((val,index)=>(
+										index<10*props.searchInfoPage && index>=10*(props.searchInfoPage-1) && <div key={uuidv4()}>{val}</div>
+									))}
+								</SearchInfoItem>
+							</SearchInfo>
+						</Search>
+					</Navbar>
+					<Toolbar>
+						<i className='iconfont aa'>&#xe636;</i>
+						<Menu>
+							<Info>
+								<a className='avatar' href="/">
+									<img src="https://upload.jianshu.io/users/upload_avatars/6253669/6c55cdbc-6d12-49b1-b82a-6e4cccc81681?imageMogr2/auto-orient/strip|imageView2/1/w/120/h/120" alt=""/>
+								</a>
+								<span className='dropdown'></span>
+							</Info>
+						</Menu>
+						<a className='btn-write' href="/"><i className="iconfont">&#xe624;</i>写文章</a>
+					</Toolbar>
+				</Nav>
+			</HeaderWrapper>
+		</Fragment>
+	)
 }
-export default Header
 
+// styled
 const Info = styled(Flex) `
 	width: 88px;
 	justify-content: center;
@@ -136,6 +122,23 @@ const Toolbar = styled(Flex) `
 		i { padding-right: 4px; }
 	}
 `
+const SearchInfoItem = styled(Flex) `
+	div {
+		padding: 2px 6px;
+		color: #787878 ;
+		font-size: 12px;
+		border: 1px solid #ddd;
+		border-radius: 3px;
+		margin: 6px 10px 6px 0;
+		cursor: pointer;
+
+		&:hover {
+			color: #333333;
+			border-color: #787878;
+		}
+	}
+`
+
 let countSpin = 0;
 const SpinAnimated = posed.i({
 	pressable: true,
@@ -162,17 +165,30 @@ const SearchInfoSwitch = styled.div `
 `
 const SearchInfoTitle = styled(Flex) `
 	justify-content: space-between;
+	align-items: center;
 	margin-bottom: 10px;
 	color: #969696;
 	font-size: 14px;
 `
-const SearchInfo = styled(Box) `
+const SearchInfoPosed = posed(Box)({
+	focused: {
+		scale: 1,
+		opacity: 1,
+		transition: { scale: {from:.5 ,ease: 'backOut'} }
+	},
+	blured: {
+		scale: 0,
+		opacity: 0
+	}
+})
+const SearchInfo = styled(SearchInfoPosed) `
 	position: absolute;
 	top: 56px;
 	padding: 20px;
 	box-shadow: 0 0 8px rgba(0,0,0,.2);
 	border-radius: 4px;
 	transform-origin: 30px 0;
+	background: white;
 
 	&::before{
 		content: '';
@@ -255,7 +271,7 @@ const Navbar = styled(Flex) `
 			&.active {
 				color: #EA6F5A;
 			}
-			&:hover {
+			&:hover:not(.active) {
 				transform: scale(.9);
 			}
 		}
@@ -273,5 +289,63 @@ const HeaderWrapper = styled(Box) `
 	height: 56px;
 	box-sizing: content-box;
 	border-bottom: 1px solid #eeeeee;
-`
-const bg = 'rgba(65, 105, 225, 0.1)'
+` 
+
+////// mapState  mapDispatch //////
+const mapState = (state, props)=>({
+	focused: state.getIn(['header','focused']),
+	mouseEnter: state.getIn(['header','mouseEnter']),
+	searchInfoItems: state.getIn(['header','searchInfoItems']),
+	searchInfoPage: state.getIn(['header','searchInfoPage']),
+	searchInfoTotalPages: state.getIn(['header','searchInfoTotalPages']),
+})
+
+const mapDispatch = (dispatch, props)=>({
+
+	handleFocus(list){
+		const getList = ()=>(
+			(dispatch, getState)=>{
+				axios.get('/api/headerList.json')
+				.then(res=>{
+					const { data } = res.data
+					const action = {
+						type: 'CHANGE_SEARCH_LIST',
+						data: fromJS(data),
+						totalPages: Math.ceil(data.length / 10)
+					}
+					dispatch(action)
+				})
+				.catch(err=>{
+					throw err
+				})
+			}
+		)
+		list.size === 0 && dispatch(getList()) // 派发了一个CHANGE_SEARCH_LIST的异步action 判断props.searchInfoItems存在就不派发了
+		const action = { type: 'SEARCH_FOCUSED' }
+		dispatch(action) // 派发了一个SEARCH_FOCUSED的普通action
+
+	},
+
+	handleBlur(){
+		const action = { type: 'SEARCH_BLURED' }
+		dispatch(action)
+	},
+
+	handleMouseEnter(){
+		const action = { type: 'MOUSE_ENTER' }
+		dispatch(action)
+	},
+
+	handleMouseLeave(){
+		const action = { type: 'MOUSE_LEAVE' }
+		dispatch(action)
+	},
+
+	handlePageChange(){
+		const action = { type: 'CHANGE_PAGE' }
+		dispatch(action)
+	}
+
+})
+
+export default connect(mapState,mapDispatch)(Header)
