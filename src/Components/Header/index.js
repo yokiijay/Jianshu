@@ -1,10 +1,34 @@
 import React, { Component, Fragment } from 'react'
 import styled from 'styled-components'
+import posed  from 'react-pose'
 
 //Components
 import { Flex, Box } from '@rebass/grid'
 
 class Header extends Component {
+	state = {
+		focused: false,
+	}
+
+	handleFocus = ()=>{
+		this.setState((prevState)=>(
+			{
+				focused: true
+			}
+		),()=>{
+			console.log(this.state.focused)
+		})
+	}
+	handleBlur = ()=>{
+		this.setState((prevState)=>(
+			{
+				focused: false
+			}
+		),()=>{
+			console.log(this.state.focused)
+		})
+	}
+
 	render(){
 		return(
 			<Fragment>
@@ -22,10 +46,18 @@ class Header extends Component {
 								<li><i className='iconfont'>&#xe613;</i>消息</li>
 							</ul>
 							<Search pl={4}>
-								<SearchBar px={3} width={[240]}>
-									<input type="text" placeholder="搜索" />
-									<i className="iconfont">&#xe60d;</i>
+								<SearchBar width={[300]}>
+										<SearchBarPosed px={3} pose={ this.state.focused ? 'focused' : 'blured' }>
+											<input onFocus={ this.handleFocus } onBlur={ this.handleBlur } type="text" placeholder="搜索" />
+											<i className={ this.state.focused ? 'iconfont focused' : 'iconfont' }>&#xe60d;</i>
+										</SearchBarPosed>
 								</SearchBar>
+								<SearchInfo width={[250]}>
+									<SearchInfoTitle>
+										热门搜索
+										<SearchInfoSwitch><SpinAnimated className="iconfont">&#xe7ea;</SpinAnimated>换一批</SearchInfoSwitch>
+									</SearchInfoTitle>
+								</SearchInfo>
 							</Search>
 						</Navbar>
 						<Toolbar>
@@ -104,7 +136,62 @@ const Toolbar = styled(Flex) `
 		i { padding-right: 4px; }
 	}
 `
-const SearchBar = styled(Flex) `
+let countSpin = 0;
+const SpinAnimated = posed.i({
+	pressable: true,
+	press: {
+		rotate: 180,
+		transition: ()=>{
+			countSpin++
+			return {
+				to: 180*countSpin
+			}
+		}
+	}
+})
+const SearchInfoSwitch = styled.div `
+	font-size: 13px;
+	cursor: pointer;
+	user-select: none;
+
+	i {
+		font-size: 13px;
+		padding: 4px;
+		display: inline-block;
+	}
+`
+const SearchInfoTitle = styled(Flex) `
+	justify-content: space-between;
+	margin-bottom: 10px;
+	color: #969696;
+	font-size: 14px;
+`
+const SearchInfo = styled(Box) `
+	position: absolute;
+	top: 56px;
+	padding: 20px;
+	box-shadow: 0 0 8px rgba(0,0,0,.2);
+	border-radius: 4px;
+	transform-origin: 30px 0;
+
+	&::before{
+		content: '';
+		position: absolute;
+		left: 27px;
+		width: 10px;
+		height: 10px;
+		transform: rotate(45deg);
+		top: -5px;
+		background: white;
+	}
+`
+const SearchBarPose = posed(Flex)({
+	focused: { width: '90%', transition: {
+		type: 'spring', stiffness: 400, damping: 20
+	} }, 
+	blured: { width: '70%', transition: { ease:'backOut', duration: 400 } }
+}) 
+const SearchBarPosed = styled(SearchBarPose) `
 	height: 38px;
 	border: none;
 	background: #eeeeee;
@@ -113,22 +200,35 @@ const SearchBar = styled(Flex) `
 	align-self: center;
 
 	input {
+		width: 100%; //input有默认宽度所以必须给个宽度或者min-width: 0;解决
 		border: none;
 		background: none;
 		font-size: 14px;
-		padding-left: 4px;
 
 		&::placeholder {
 			color: #999999;
 		}
 	}
 	i {
+		text-align: center;
 		margin-left: auto;
-		font-size: 16px;
+		font-size: 14px;
 		color: #969696;
+		margin-right: -10px;
+		padding: 7px;
+		transition: all .1s ease-out;
+		border-radius: 50%;
+
+		&.focused {
+			background: #969696;
+			color: white;
+		}
 	}
 `
+const SearchBar = styled(Flex) `
+`
 const Search = styled(Flex) `
+	position: relative;
 `
 const Navbar = styled(Flex) `
 	ul {
