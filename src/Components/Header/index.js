@@ -183,6 +183,7 @@ const SearchInfoPosed = posed(Box)({
 })
 const SearchInfo = styled(SearchInfoPosed) `
 	position: absolute;
+	z-index: 999;
 	top: 56px;
 	padding: 20px;
 	box-shadow: 0 0 8px rgba(0,0,0,.2);

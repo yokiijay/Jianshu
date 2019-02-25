@@ -9,7 +9,7 @@ class Home extends Component {
 		return(
 			<Fragment>
 				<Flex justifyContent='center'>
-					<Box width={625}>
+					<Box width={[1,1/2,625]}>
 						<Banner />
 					</Box>
 				</Flex>
