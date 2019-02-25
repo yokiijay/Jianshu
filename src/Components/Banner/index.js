@@ -6,14 +6,33 @@ import posed from 'react-pose'
 //Components
 
 class Banner extends Component {
+	state = {
+		items: [
+			'https://upload.jianshu.io/admin_banners/web_images/4613/e96eece16a9e3ae1699dd4bd0002666c571c30f5.jpeg?imageMogr2/auto-orient/strip|imageView2/1/w/1250/h/540',
+			'https://upload.jianshu.io/admin_banners/web_images/4592/2cbadf9347d69cfc140daf64de887fda0e361bcc.jpg?imageMogr2/auto-orient/strip%7CimageView2/1/w/1250/h/540'
+		],
+		currentIndex: 0,
+		action: 'prev',
+		el: [1,2,3,4]
+	}
+
+	handlePrev = ()=>{
+		console.log()
+	}
+
 	render(){
 		return(
 			<Fragment>
 				<BannerWrapper width={1}>
-					<BannerItem src='https://upload.jianshu.io/admin_banners/web_images/4613/e96eece16a9e3ae1699dd4bd0002666c571c30f5.jpeg?imageMogr2/auto-orient/strip|imageView2/1/w/1250/h/540' />
-					<BannerItem src='https://upload.jianshu.io/admin_banners/web_images/4592/2cbadf9347d69cfc140daf64de887fda0e361bcc.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/1250/h/540' />
+					<BannerItemWrapper>
+						{
+							this.state.items.map( (val,index)=>	<BannerItem pose={ this.state.action } index key={index} src={val} /> )
+						}
+					</BannerItemWrapper>
+					{/* <BannerItem src='https://upload.jianshu.io/admin_banners/web_images/4613/e96eece16a9e3ae1699dd4bd0002666c571c30f5.jpeg?imageMogr2/auto-orient/strip|imageView2/1/w/1250/h/540' />
+					<BannerItem src='https://upload.jianshu.io/admin_banners/web_images/4592/2cbadf9347d69cfc140daf64de887fda0e361bcc.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/1250/h/540' /> */}
 					<ul className='arrow'>
-						<li><i className="iconfont">&#xe7ed;</i></li>
+						<li onClick={this.handlePrev}><i className="iconfont">&#xe7ed;</i></li>
 						<li><i className="iconfont">&#xe7eb;</i></li>
 					</ul>
 					<ul className="pagination">
@@ -21,20 +40,61 @@ class Banner extends Component {
 						<li></li>
 					</ul>
 				</BannerWrapper>
+				<AnimeUl>
+					{
+						this.state.el.map(()=>(
+							
+						))
+					}
+				</AnimeUl>
 			</Fragment>
 		)
 	}
+
+	handleClick = ()=>{
+		this.setState( (prevState)=>({
+			currentIndex: prevState.currentIndex+1,
+			action: 'next'
+		}),()=>{
+			console.log(1)
+		} )
+	}
 }
 
-const BannerItem = styled.div `
+const AnimeStyled = styled.li `
+	width: 200px;
+	height: 200px;
+	background: royalblue;
+	margin: 5px;
+	float: left;
+`
+const AnimeUl = posed.ul()
+const AnimeLi = posed(AnimeStyled)()
+
+const BannerItemWrapper = styled(Box) `
 	position: absolute;
+	width: 100%;
+	height: 100%;
+	border-radius: 6px;
+	/* overflow: hidden; */
+`
+const BannerItemPosed = posed.div({
+	previous: {
+		left: props=>props.index*100+'%'
+	},
+	next: {
+		left: props=>(props.index-1)*100+'%'
+	}
+})
+const BannerItem = styled(BannerItemPosed) `
+	position: absolute;
+	left: ${props=>props.index*100+'%'};
 	z-index: -1;
 	width: 100%;
 	height: 100%;
 	background-image: url(${ props=>props.src });
 	background-size: cover;
 	background-position: center;
-	border-radius: 6px;
 `
 const BannerWrapper = styled(Flex) `
 	position: relative;
