@@ -11,7 +11,7 @@ class Banner extends Component {
 			'https://upload.jianshu.io/admin_banners/web_images/4613/e96eece16a9e3ae1699dd4bd0002666c571c30f5.jpeg?imageMogr2/auto-orient/strip|imageView2/1/w/1250/h/540',
 			'https://upload.jianshu.io/admin_banners/web_images/4592/2cbadf9347d69cfc140daf64de887fda0e361bcc.jpg?imageMogr2/auto-orient/strip%7CimageView2/1/w/1250/h/540'
 		],
-		el: [ 1,2,3,4,5,6 ]
+		count: 0
 	}
 
 	render(){
@@ -21,7 +21,7 @@ class Banner extends Component {
 					<BannerItemWrapper>
 						<PoseGroup>
 							{
-								this.state.items.map( (val,index)=>	<BannerItem pose={ this.state.action } index={index} key={index} src={val} /> )
+								this.state.items.map( (val,index)=>	<BannerItem pose={ this.state.action } index={index} count={this.state.count} key={index} src={val} /> )
 							}
 						</PoseGroup>
 					</BannerItemWrapper>
@@ -43,8 +43,8 @@ class Banner extends Component {
 	componentDidMount(){
 		setInterval(() => {
 			this.setState( (state)=>({
-				items: state.items.concat(state.items.shift()),
-				el: state.el.concat(state.el.shift()),
+				// items: state.items.concat(state.items.shift()),
+				count: state.count + 1
 			}) )
 		}, 1000);
 	}
@@ -60,8 +60,8 @@ const BannerItemWrapper = styled(Box) `
 `
 const BannerItemPosed = posed.div()
 const BannerItem = styled(BannerItemPosed) `
-	/* position: absolute; */
-	/* left: ${props=>props.index*100+'%'}; */
+	position: absolute;
+	left: ${props=>props.count*-100+props.index*100+'%'};
 	z-index: -1;
 	width: 100%;
 	height: 100%;
