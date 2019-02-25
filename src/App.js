@@ -2,6 +2,8 @@ import React, { Component, Fragment } from 'react'
 import GlobalStyle from './globalStyle'
 import { connect } from 'react-redux'
 import { BrowserRouter as Router, Link, Route, Redirect } from 'react-router-dom'
+import "../node_modules/slick-carousel/slick/slick.css"; 
+import "../node_modules/slick-carousel/slick/slick-theme.css";
 
 //Components
 import Header from './Components/Header'
