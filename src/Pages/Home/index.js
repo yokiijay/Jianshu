@@ -1,8 +1,9 @@
 import React, { Component, Fragment } from 'react'
 import { Flex, Box } from '@rebass/grid'
+import { connect } from 'react-redux'
 
 //Components
-import Banner from '../Components/Banner'
+import Banner from './Components/Banner'
 
 class Home extends Component {
 	render(){
@@ -18,4 +19,4 @@ class Home extends Component {
 	}
 }
 
-export default Home
+export default connect()(Home)
