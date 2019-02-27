@@ -6,7 +6,6 @@ import { connect } from 'react-redux'
 
 //Components
 
-let slides = null
 const Banner = ({settings,...props})=>{
 	settings = {
 		infinite: true,
