@@ -13,7 +13,7 @@ const Header = (props)=>{
 	return(
 		<Fragment>
 			<HeaderWrapper width={1}>
-				<Nav mx='auto' width={[1,null,null,null,1440]} bg={'white'}>
+				<Nav mx='auto' /* width={[1,null,null,1440,1440]} */ bg={'white'}>
 					<Brand width={[240,1/6]}>
 						<a href="https://jianshu.com">
 							<img src="https://cdn2.jianshu.io/assets/web/nav-logo-4c7bbafe27adc892f3046e6978459bac.png" alt=""/>
@@ -285,6 +285,7 @@ const Brand = styled(Box) `
 `
 const Nav = styled(Flex) `
 	height: 100%;
+	max-width: 1440px;
 `
 const HeaderWrapper = styled(Box) `
 	height: 56px;
