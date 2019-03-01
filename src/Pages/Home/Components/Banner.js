@@ -117,8 +117,8 @@ const BannerWrapper = styled(Flex) `
 `
 
 const mapState = (state, props)=>({
-	items: state.getIn(['banner','items']),
-	count: state.getIn(['banner','count'])
+	items: props.items || state.getIn(['banner','items']),
+	count: props.count || state.getIn(['banner','count'])
 })
 
 const mapDispatch = (dispatch, props)=>({

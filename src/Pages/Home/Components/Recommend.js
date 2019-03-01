@@ -1,5 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import styled from 'styled-components'
+import { connect } from 'react-redux'
+import posed from 'react-pose'
 
 // Components
 import { Flex, Box } from '@rebass/grid'
@@ -9,12 +11,9 @@ class Recommend extends Component {
     return(
       <Fragment>
         <RecommendWrapper flexDirection='column'>
-          <RecommendItem src='https://cdn2.jianshu.io/assets/web/banner-s-club-aa8bdf19f8cf729a759da42e4a96f366.png' />
-          <RecommendItem src='https://cdn2.jianshu.io/assets/web/banner-s-3-ddcc844ebdd8edca2d93b7ea5a8de79e.png' />
-          <RecommendItem src='https://cdn2.jianshu.io/assets/web/banner-s-4-b70da70d679593510ac93a172dfbaeaa.png' />
-          <RecommendItem src='https://cdn2.jianshu.io/assets/web/banner-s-7-1a0222c91694a1f38e610be4bf9669be.png' />
-          <RecommendItem src='https://cdn2.jianshu.io/assets/web/banner-s-5-4ba25cf5041931a0ed2062828b4064cb.png' />
-          <RecommendItem src='https://cdn2.jianshu.io/assets/web/banner-s-6-c4d6335bfd688f2ca1115b42b04c28a7.png' />
+          { this.props.items.map( (val,index)=>(
+            <RecommendItem key={val} src={val} />            
+          ) ) }
           <RecommendQR>
             <img src="https://s2.ax1x.com/2019/03/01/kH8kE8.jpg" alt=""/>
             <Box ml='10px'>
@@ -23,12 +22,98 @@ class Recommend extends Component {
             </Box>
             <QRFlow className='qr-flow' /> 
           </RecommendQR>
+          <RecommendWriters flexWrap='wrap'>
+            <WritersTitle width={1} px={1}>
+              推荐作者
+              <WritersSwitch><SpinAnimated className="iconfont">&#xe7ea;</SpinAnimated>换一批</WritersSwitch>
+            </WritersTitle>
+            {
+              this.props.writers.map((val,index)=>(
+                <Writer key={index} width={1}>
+                  <img src={val.avatar} alt=""/>
+                  <div>
+                    <h4>{val.username}</h4>
+                    <h5>写了{val.written/1000}k字·17.9k喜欢</h5>
+                  </div>
+                  <span><i className="iconfont">&#xe629;</i>关注</span>
+                </Writer>
+              ))
+            }
+          </RecommendWriters>
         </RecommendWrapper>
       </Fragment>
     )
   }
 }
 
+const Writer = styled(Flex) `
+  img {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 1px solid #DDDDDD;
+    cursor: pointer;
+  }
+  h4 {
+    margin-left: 10px;
+    font-size: 14px;
+    line-height: 20px;
+    color: #333333;
+    padding-top: 5px;
+    cursor: pointer;
+  }
+  h5 {
+    margin-left: 10px;
+    font-size: 12px;
+    line-height: 20px;
+    color: #969696;
+  }
+  span {
+    font-size: 13px;
+    color: #42c02e;
+    display: flex;
+    flex-grow: 1;
+    justify-content: flex-end;
+    align-items: center;
+    cursor: pointer;
+    i { margin-right: 2px; }
+  }
+`
+const RecommendWriters = styled(Flex) `
+
+`
+
+let countSpin = 0;
+const SpinAnimated = posed.i({
+	pressable: true,
+	press: {
+		rotate: 180,
+		transition: ()=>{
+			countSpin++
+			return {
+				to: 180*countSpin
+			}
+		}
+	}
+})
+const WritersSwitch = styled.div `
+	font-size: 13px;
+	cursor: pointer;
+	user-select: none;
+
+	i {
+		font-size: 13px;
+		padding: 4px;
+		display: inline-block;
+	}
+`
+const WritersTitle = styled(Flex) `
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 10px;
+	color: #969696;
+	font-size: 14px;
+`
 const QRFlow = styled.div `
   position: absolute;
   width: 160px;
@@ -65,6 +150,7 @@ const RecommendQR = styled.div `
   height: 60px;
   padding: 10px 22px;
   margin-top: 4px;
+  margin-bottom: 30px;
   border-radius: 6px;
   border: 1px solid #f0f0f0;
   cursor: pointer;
@@ -109,4 +195,9 @@ const RecommendWrapper = styled(Flex) `
   margin-top: -4px;
 `
 
-export default Recommend
+const mapState = (state, props)=>({
+  items: state.getIn(['recommend','recommendItems']),
+  writers: state.getIn(['recommend','recommendWriters']),
+})
+
+export default connect(mapState)(Recommend)

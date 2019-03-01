@@ -6,6 +6,7 @@ import { connect } from 'react-redux'
 import Banner from './Components/Banner'
 import Recommend from './Components/Recommend'
 
+
 class Home extends Component {
 	render(){
 		return(
