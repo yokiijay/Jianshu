@@ -8,5 +8,5 @@ import recommend from './recommendReducer'
 export default combineReducers({
 	header,
 	banner,
-	recommend
+	recommend,
 })

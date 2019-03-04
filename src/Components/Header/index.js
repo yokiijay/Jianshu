@@ -112,7 +112,6 @@ const Toolbar = styled(Flex) `
 		width: 100px;
 		height: 40px;
 		line-height: 40px;
-		vertical-align: middle;
 		text-align: center;
 		background: #ea6f5a;
 		color: white;

@@ -1,6 +1,6 @@
-import React, { Component, Fragment } from 'react'
+import React, { Fragment } from 'react'
 import styled from 'styled-components'
-import { Flex, Box } from '@rebass/grid'
+import { Flex } from '@rebass/grid'
 import Slider from 'react-slick'
 import { connect } from 'react-redux'
 

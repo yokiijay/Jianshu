@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 import posed from 'react-pose'
+import axios from 'axios'
 
 // Components
 import { Flex, Box } from '@rebass/grid'
@@ -23,26 +24,31 @@ class Recommend extends Component {
             <QRFlow className='qr-flow' /> 
           </RecommendQR>
           <RecommendWriters flexWrap='wrap'>
-            <WritersTitle width={1} px={1}>
+            <WritersTitle width={1}>
               推荐作者
               <WritersSwitch><SpinAnimated className="iconfont">&#xe7ea;</SpinAnimated>换一批</WritersSwitch>
             </WritersTitle>
             {
               this.props.writers.map((val,index)=>(
-                <Writer key={index} width={1}>
+                <Writer key={index} width={1} mt={2}>
                   <img src={val.avatar} alt=""/>
                   <div>
                     <h4>{val.username}</h4>
-                    <h5>写了{val.written/1000}k字·17.9k喜欢</h5>
+                    <h5>写了{(val.written/1000).toFixed(1)}k字 · {(val.liked/1000).toFixed(1)}k喜欢</h5>
                   </div>
                   <span><i className="iconfont">&#xe629;</i>关注</span>
                 </Writer>
               ))
             }
+            <div className="viewAll">查看全部<i className="iconfont">&#xe7eb;</i></div>
           </RecommendWriters>
         </RecommendWrapper>
       </Fragment>
     )
+  }
+
+  componentDidMount(){
+    this.props.load()
   }
 }
 
@@ -80,7 +86,26 @@ const Writer = styled(Flex) `
   }
 `
 const RecommendWriters = styled(Flex) `
+  .viewAll {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 18px;
+    margin-top: 20px;
+    padding: 7px 7px 7px 12px;
+    background: #F7F7F7;
+    border: 1px solid #DCDCDC;
+    color: #787878;
+    font-size: 13px;
+    border-radius: 4px;
+    cursor: pointer;
 
+    i {
+      font-size: 10px;
+      padding-left: 4px;
+    }
+  }
 `
 
 let countSpin = 0;
@@ -196,8 +221,30 @@ const RecommendWrapper = styled(Flex) `
 `
 
 const mapState = (state, props)=>({
-  items: state.getIn(['recommend','recommendItems']),
-  writers: state.getIn(['recommend','recommendWriters']),
+  items: props.items || state.getIn(['recommend','recommendItems']),
+  writers: props.writers || state.getIn(['recommend','recommendWriters']).toJS(),
+})
+const mapDispatch = (dispatch, props)=>({
+  load(){
+    const loadData = ()=>(
+      (dispatch, getState)=>{
+        axios.get('/api/recommend.json')
+        .then(res=>{
+          const { data } = res
+          const action = {
+            type: 'LOAD',
+            recommendItems: data.recommendItems,
+            recommendWriters: data.recommendWriters,
+          }
+          dispatch(action)
+        })
+        .catch(err=>{
+          throw err
+        })
+      }
+    )
+    dispatch(loadData())
+  },
 })
 
-export default connect(mapState)(Recommend)
+export default connect(mapState,mapDispatch)(Recommend)
