@@ -11,12 +11,12 @@ const GlobalStyle = createGlobalStyle `
   
   @font-face {
     font-family: 'iconfont';  /* project id 1036286 */
-    src: url('//at.alicdn.com/t/font_1036286_4p2j920ku44.eot');
-    src: url('//at.alicdn.com/t/font_1036286_4p2j920ku44.eot?#iefix') format('embedded-opentype'),
-    url('//at.alicdn.com/t/font_1036286_4p2j920ku44.woff2') format('woff2'),
-    url('//at.alicdn.com/t/font_1036286_4p2j920ku44.woff') format('woff'),
-    url('//at.alicdn.com/t/font_1036286_4p2j920ku44.ttf') format('truetype'),
-    url('//at.alicdn.com/t/font_1036286_4p2j920ku44.svg#iconfont') format('svg');
+    src: url('//at.alicdn.com/t/font_1036286_magglbhpvd.eot');
+    src: url('//at.alicdn.com/t/font_1036286_magglbhpvd.eot?#iefix') format('embedded-opentype'),
+    url('//at.alicdn.com/t/font_1036286_magglbhpvd.woff2') format('woff2'),
+    url('//at.alicdn.com/t/font_1036286_magglbhpvd.woff') format('woff'),
+    url('//at.alicdn.com/t/font_1036286_magglbhpvd.ttf') format('truetype'),
+    url('//at.alicdn.com/t/font_1036286_magglbhpvd.svg#iconfont') format('svg');
   }
   .iconfont{
     font-family:"iconfont" !important;
