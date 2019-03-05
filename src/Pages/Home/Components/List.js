@@ -1,6 +1,8 @@
 import React, { Component, Fragment } from 'react'
 import { Flex, Box } from '@rebass/grid'
 import styled from 'styled-components'
+import { connect } from 'react-redux'
+import uuidv4 from 'uuid/v4'
 
 // Components
 
@@ -9,22 +11,26 @@ class List extends Component {
     return(
       <Fragment>
         <ListWrapper width={[1]} flexDirection='column'>
-          <ListItem width={[1]} py={4} flexWrap='wrap' src='https://upload-images.jianshu.io/upload_images/4127955-912a80fba95073bd.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/360/h/240'>
-            <Box className="left" width={[458]}>
-              <h3>心里学：你是聪明女人还是笨女人，自己对照</h3>
-              <p>在现实生活中，你会发现，往往而言，那些活得幸福的女人往往都是聪明与智慧的。而那些越来越糟心的女孩，往往是由于自己的无知，所以才会屡屡遭受生活的惩...</p>
-              <div className="info">
-                <i className="iconfont diamond">&#xe675;</i>&nbsp;<span style={{color:'#ea6f5a'}}>11.3</span>
-                <a href="">科技脑洞</a>
-                <i className="iconfont comment">&#xe7ec;</i>&nbsp;<span>18</span>
-                <i className="iconfont liked">&#xe79d;</i>&nbsp;<span>65</span>
-              </div>
-            </Box>
-            <Box className="right" width={[150]}>
-              <a className="img" href=""></a>
-            </Box>
-          </ListItem>
-        <ListMore>阅读更多</ListMore>
+          {
+            this.props.listItems.map( (val,index)=>(
+              <ListItem key={uuidv4()} width={[1]} py={4} flexWrap='wrap' src={val.get('src')} >
+                <Box className="left" width={[458]}>
+                  <h3>{val.get('title')}</h3>
+                  <p>{val.get('content')}</p>
+                  <div className="info">
+                    <i className="iconfont diamond">&#xe675;</i>&nbsp;<span style={{color:'#ea6f5a'}}>{val.get('diamond')}</span>
+                    <a href="">{val.get('useranme')}</a>
+                    <i className="iconfont comment">&#xe7ec;</i>&nbsp;<span>{val.get('comment')}</span>
+                    <i className="iconfont liked">&#xe79d;</i>&nbsp;<span>{val.get('liked')}</span>
+                  </div>
+                </Box>
+                <Box className="right" width={[150]}>
+                  <a className="img" href=""></a>
+                </Box>
+              </ListItem>
+            ) )
+          }
+        <ListMore onClick={()=>this.props.loadMoreList()}>阅读更多</ListMore>
         </ListWrapper>
       </Fragment>
     )
@@ -58,6 +64,7 @@ const ListItem = styled(Flex) `
     color: #2f2f2f;
     font-weight: 700;
     margin-bottom: 4px;
+    cursor: pointer;
   }
   p {
     font-size: 13px;
@@ -104,4 +111,14 @@ const ListItem = styled(Flex) `
 const ListWrapper = styled(Flex) `
 `
 
-export default List
+const mapState = (state, props)=>({
+  listItems: state.get('list')
+})
+const mapDispatch = (dispatch, props)=>({
+  loadMoreList(){
+    const action = { type: 'LOAD_MORE_LIST' }
+    dispatch(action)
+  },
+})
+
+export default connect(mapState, mapDispatch)(List)
