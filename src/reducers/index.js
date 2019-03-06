@@ -10,5 +10,5 @@ export default combineReducers({
 	header,
 	banner,
 	recommend,
-	list
+	list,
 })

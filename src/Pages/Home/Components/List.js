@@ -3,6 +3,8 @@ import { Flex, Box } from '@rebass/grid'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 import uuidv4 from 'uuid/v4'
+import axios from 'axios'
+import {fromJS} from 'immutable'
 
 // Components
 
@@ -19,13 +21,13 @@ class List extends PureComponent {
                   <p>{val.get('content')}</p>
                   <div className="info">
                     <i className="iconfont diamond">&#xe675;</i>&nbsp;<span style={{color:'#ea6f5a'}}>{val.get('diamond')}</span>
-                    <a href="">{val.get('useranme')}</a>
+                    <a href="/">{val.get('useranme')}</a>
                     <i className="iconfont comment">&#xe7ec;</i>&nbsp;<span>{val.get('comment')}</span>
                     <i className="iconfont liked">&#xe79d;</i>&nbsp;<span>{val.get('liked')}</span>
                   </div>
                 </Box>
                 <Box className="right" width={[150]}>
-                  <a className="img" href=""></a>
+                  <a className="img" href="/"> </a>
                 </Box>
               </ListItem>
             ) )
@@ -34,6 +36,10 @@ class List extends PureComponent {
         </ListWrapper>
       </Fragment>
     )
+  }
+
+  componentDidMount(){
+    this.props.loadList()
   }
 }
 
@@ -115,6 +121,21 @@ const mapState = (state, props)=>({
   listItems: state.get('list')
 })
 const mapDispatch = (dispatch, props)=>({
+  loadList(){
+		const getList = ()=>(
+			(dispatch, getState)=>{
+				axios.get('/api/list.json')
+				.then(res=>{
+					const action = {
+						type: 'LOAD_LIST',
+						list: fromJS(res.data)
+          }
+					dispatch(action)
+				})
+			}
+		)
+		dispatch(getList())
+	},
   loadMoreList(){
     const action = { type: 'LOAD_MORE_LIST' }
     dispatch(action)
