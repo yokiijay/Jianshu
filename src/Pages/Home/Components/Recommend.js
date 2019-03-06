@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react'
+import React, { PureComponent, Fragment } from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 import posed from 'react-pose'
@@ -7,7 +7,7 @@ import axios from 'axios'
 // Components
 import { Flex, Box } from '@rebass/grid'
 
-class Recommend extends Component {
+class Recommend extends PureComponent {
   render(){
     return(
       <Fragment>

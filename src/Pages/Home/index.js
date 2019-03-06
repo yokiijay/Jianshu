@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react'
+import React, { PureComponent, Fragment } from 'react'
 import { Flex, Box } from '@rebass/grid'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
@@ -11,7 +11,7 @@ import Recommend from './Components/Recommend'
 import List from './Components/List'
 
 
-class Home extends Component {
+class Home extends PureComponent {
 	handleScrollTop(){
 		$('html,body').animate({
 			scrollTop: 0

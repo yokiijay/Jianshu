@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react'
+import React, { PureComponent, Fragment } from 'react'
 import { Flex, Box } from '@rebass/grid'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
@@ -6,7 +6,7 @@ import uuidv4 from 'uuid/v4'
 
 // Components
 
-class List extends Component {
+class List extends PureComponent {
   render(){
     return(
       <Fragment>
