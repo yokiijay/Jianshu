@@ -17,13 +17,13 @@ class App extends Component {
     return(
       <Fragment>
 	      <GlobalStyle />
-        <Header />
 
         <Router>
         	<Fragment>
+            <Header />
         		<Route exact path='/' component={ Home } />
         		<Route exact path='/home' render={()=><Redirect to='/' />} />
-        		<Route exact path='/detail' component={ Detail } />
+        		<Route exact path='/detail/:id' component={ Detail } />
         	</Fragment>
         </Router>
       </Fragment>

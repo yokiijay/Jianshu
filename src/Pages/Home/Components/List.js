@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import uuidv4 from 'uuid/v4'
 import axios from 'axios'
 import {fromJS} from 'immutable'
+import { Link } from 'react-router-dom'
 
 // Components
 
@@ -17,7 +18,9 @@ class List extends PureComponent {
             this.props.listItems.map( (val,index)=>(
               <ListItem key={uuidv4()} width={[1]} py={4} flexWrap='wrap' src={val.get('src')} >
                 <Box className="left" width={[458]}>
-                  <h3>{val.get('title')}</h3>
+                  <Link to={`/detail/${val.get('_id')}`}>
+                    <h3>{val.get('title')}</h3>
+                  </Link>
                   <p>{val.get('content')}</p>
                   <div className="info">
                     <i className="iconfont diamond">&#xe675;</i>&nbsp;<span style={{color:'#ea6f5a'}}>{val.get('diamond')}</span>

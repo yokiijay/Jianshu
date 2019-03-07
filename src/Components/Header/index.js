@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import axios from 'axios'
 import { fromJS } from 'immutable'
 import uuidv4 from 'uuid/v4'
+import { Link } from 'react-router-dom'
 
 //Components
 import { Flex, Box } from '@rebass/grid'
@@ -15,9 +16,9 @@ const Header = (props)=>{
 			<HeaderWrapper width={1}>
 				<Nav mx='auto' /* width={[1,null,null,1440,1440]} */ bg={'white'}>
 					<Brand width={[240,1/6]}>
-						<a href="https://jianshu.com">
+						<Link to="/">
 							<img src="https://cdn2.jianshu.io/assets/web/nav-logo-4c7bbafe27adc892f3046e6978459bac.png" alt=""/>
-						</a>
+						</Link>
 					</Brand>
 					<Navbar width={[1,null,null,945]} bg={'white'}>
 						<ul>
