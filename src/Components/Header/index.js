@@ -51,12 +51,19 @@ const Header = (props)=>{
 					<Toolbar>
 						<i className='iconfont aa'>&#xe636;</i>
 						<Menu>
+						{
+							!props.login ?  //未登录
+							<Link to='/login'>
+								<Login>登陆</Login>
+							</Link>
+							: //已登陆
 							<Info>
 								<a className='avatar' href="/">
 									<img src="https://upload.jianshu.io/users/upload_avatars/6253669/6c55cdbc-6d12-49b1-b82a-6e4cccc81681?imageMogr2/auto-orient/strip|imageView2/1/w/120/h/120" alt=""/>
 								</a>
 								<span className='dropdown'></span>
 							</Info>
+						}
 						</Menu>
 						<a className='btn-write' href="/"><i className="iconfont">&#xe624;</i>写文章</a>
 					</Toolbar>
@@ -67,6 +74,17 @@ const Header = (props)=>{
 }
 
 // styled
+const Login = styled.div `
+	box-sizing: border-box;
+	width: 88px;
+	background: #eee;
+	color: #333;
+	padding: 12px 8px;
+	margin-right: 8px;
+	border-radius: 44px;
+	text-align: center;
+	cursor: pointer;
+`
 const Info = styled(Flex) `
 	width: 88px;
 	justify-content: center;
@@ -300,6 +318,7 @@ const mapState = (state, props)=>({
 	searchInfoItems: state.getIn(['header','searchInfoItems']),
 	searchInfoPage: state.getIn(['header','searchInfoPage']),
 	searchInfoTotalPages: state.getIn(['header','searchInfoTotalPages']),
+	login: state.getIn(['login','login'])
 })
 
 const mapDispatch = (dispatch, props)=>({
@@ -346,7 +365,7 @@ const mapDispatch = (dispatch, props)=>({
 	handlePageChange(){
 		const action = { type: 'CHANGE_PAGE' }
 		dispatch(action)
-	}
+	},
 
 })
 

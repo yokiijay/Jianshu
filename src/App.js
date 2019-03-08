@@ -11,6 +11,7 @@ import Header from './Components/Header'
 //Pages
 import Home from './Pages/Home'
 import Detail from './Pages/Detail'
+import Login from './Pages/Login'
 
 class App extends Component {
   render(){
@@ -24,6 +25,7 @@ class App extends Component {
         		<Route exact path='/' component={ Home } />
         		<Route exact path='/home' render={()=><Redirect to='/' />} />
         		<Route exact path='/detail/:id' component={ Detail } />
+        		<Route exact path='/login' component={ Login } />
         	</Fragment>
         </Router>
       </Fragment>

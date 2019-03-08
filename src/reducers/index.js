@@ -6,6 +6,7 @@ import banner from './bannerReducer'
 import recommend from './recommendReducer'
 import list from './listReducer'
 import detail from './detailReducer'
+import login from './loginReducer'
 
 export default combineReducers({
 	header,
@@ -13,4 +14,5 @@ export default combineReducers({
 	recommend,
 	list,
 	detail,
+	login,
 })

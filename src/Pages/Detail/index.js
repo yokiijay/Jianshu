@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react'
+import React, { PureComponent } from 'react'
 import { Flex, Box } from '@rebass/grid'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
@@ -6,7 +6,7 @@ import axios from 'axios'
 
 //Components
 
-class Detail extends Component {
+class Detail extends PureComponent {
 	render(){
 		return(
 			<Flex py={30} justifyContent='center'>
