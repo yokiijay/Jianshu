@@ -3,6 +3,7 @@ import { Flex, Box } from '@rebass/grid'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 import axios from 'axios'
+import { withRouter } from 'react-router-dom'
 
 //Components
 
@@ -123,4 +124,4 @@ const mapDispatch = (dispatch, props)=>({
 	},
 })
 
-export default connect(mapState,mapDispatch)(Detail)
+export default connect(mapState,mapDispatch)(withRouter(Detail))

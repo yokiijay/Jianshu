@@ -9,6 +9,7 @@
     "jquery": "^3.3.1",
     "jquery.easing": "^1.4.1",
     "react": "^16.7.0",
+    "react-content-loader": "^4.2.1",
     "react-dom": "^16.7.0",
     "react-loadable": "^5.5.0",
     "react-pose": "^4.0.7",

@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react'
 import styled from 'styled-components'
-import posed  from 'react-pose'
+import posed from 'react-pose'
 import { connect } from 'react-redux'
 import axios from 'axios'
 import { fromJS } from 'immutable'
@@ -10,17 +10,17 @@ import { Link } from 'react-router-dom'
 //Components
 import { Flex, Box } from '@rebass/grid'
 
-const Header = (props)=>{
-	return(
+const Header = (props) => {
+	return (
 		<Fragment>
 			<HeaderWrapper width={1}>
 				<Nav mx='auto' /* width={[1,null,null,1440,1440]} */ bg={'white'}>
-					<Brand width={[240,1/6]}>
+					<Brand width={[240, 1 / 6]}>
 						<Link to="/">
-							<img src="https://cdn2.jianshu.io/assets/web/nav-logo-4c7bbafe27adc892f3046e6978459bac.png" alt=""/>
+							<img src="https://cdn2.jianshu.io/assets/web/nav-logo-4c7bbafe27adc892f3046e6978459bac.png" alt="" />
 						</Link>
 					</Brand>
-					<Navbar width={[1,null,null,945]} bg={'white'}>
+					<Navbar width={[1, null, null, 945]} bg={'white'}>
 						<ul>
 							<li className='active'><i className='iconfont'>&#xe642;</i>发现</li>
 							<li><i className='iconfont'>&#xe748;</i>关注</li>
@@ -28,21 +28,21 @@ const Header = (props)=>{
 						</ul>
 						<Search pl={4}>
 							<SearchBar width={[300]}>
-									<SearchBarPosed px={3} pose={ props.focused ? 'focused' : 'blured' }>
-										<input onFocus={ ()=>props.handleFocus(props.searchInfoItems) } onBlur={ props.handleBlur } type="text" placeholder="搜索" />
-										<i className={ props.focused ? 'iconfont focused' : 'iconfont' }>&#xe60d;</i>
-									</SearchBarPosed>
+								<SearchBarPosed px={3} pose={props.focused ? 'focused' : 'blured'}>
+									<input onFocus={() => props.handleFocus(props.searchInfoItems)} onBlur={props.handleBlur} type="text" placeholder="搜索" />
+									<i className={props.focused ? 'iconfont focused' : 'iconfont'}>&#xe60d;</i>
+								</SearchBarPosed>
 							</SearchBar>
-							<SearchInfo onMouseEnter={ props.handleMouseEnter } onMouseLeave={ props.handleMouseLeave } width={[250]} pose={ props.focused || props.mouseEnter ? 'focused' : 'blured' }>
+							<SearchInfo onMouseEnter={props.handleMouseEnter} onMouseLeave={props.handleMouseLeave} width={[250]} pose={props.focused || props.mouseEnter ? 'focused' : 'blured'}>
 								<SearchInfoTitle>
 									热门搜索
 									<SearchInfoSwitch
-									onClick={ props.handlePageChange }
+										onClick={props.handlePageChange}
 									><SpinAnimated className="iconfont">&#xe7ea;</SpinAnimated>换一批</SearchInfoSwitch>
 								</SearchInfoTitle>
 								<SearchInfoItem flexWrap='wrap'>
-									{props.searchInfoItems.map((val,index)=>(
-										index<10*props.searchInfoPage && index>=10*(props.searchInfoPage-1) && <div key={uuidv4()}>{val}</div>
+									{props.searchInfoItems.map((val, index) => (
+										index < 10 * props.searchInfoPage && index >= 10 * (props.searchInfoPage - 1) && <div key={uuidv4()}>{val}</div>
 									))}
 								</SearchInfoItem>
 							</SearchInfo>
@@ -51,19 +51,19 @@ const Header = (props)=>{
 					<Toolbar>
 						<i className='iconfont aa'>&#xe636;</i>
 						<Menu>
-						{
-							!props.login ?  //未登录
-							<Link to='/login'>
-								<Login>登陆</Login>
-							</Link>
-							: //已登陆
-							<Info>
-								<a className='avatar' href="/">
-									<img src="https://upload.jianshu.io/users/upload_avatars/6253669/6c55cdbc-6d12-49b1-b82a-6e4cccc81681?imageMogr2/auto-orient/strip|imageView2/1/w/120/h/120" alt=""/>
-								</a>
-								<span className='dropdown'></span>
-							</Info>
-						}
+							{
+								!props.login ?  //未登录
+									<Link to='/login'>
+										<Login>登陆</Login>
+									</Link>
+									: //已登陆
+									<Info onClick={props.handleLogout}>
+										<div className='avatar' href="/">
+											<img src="https://upload.jianshu.io/users/upload_avatars/6253669/6c55cdbc-6d12-49b1-b82a-6e4cccc81681?imageMogr2/auto-orient/strip|imageView2/1/w/120/h/120" alt="" />
+										</div>
+										<span className='dropdown'></span>
+									</Info>
+							}
 						</Menu>
 						<a className='btn-write' href="/"><i className="iconfont">&#xe624;</i>写文章</a>
 					</Toolbar>
@@ -74,7 +74,7 @@ const Header = (props)=>{
 }
 
 // styled
-const Login = styled.div `
+const Login = styled.div`
 	box-sizing: border-box;
 	width: 88px;
 	background: #eee;
@@ -85,7 +85,7 @@ const Login = styled.div `
 	text-align: center;
 	cursor: pointer;
 `
-const Info = styled(Flex) `
+const Info = styled(Flex)`
 	width: 88px;
 	justify-content: center;
 	align-items: center;
@@ -93,6 +93,7 @@ const Info = styled(Flex) `
 	.avatar {
 		display: flex;
 		align-items: center;
+		cursor: pointer;
 	}
 	.avatar img {
 		width: 40px;
@@ -112,10 +113,10 @@ const Info = styled(Flex) `
     border-top: 6px solid #999;
 	}
 `
-const Menu = styled(Box) `
+const Menu = styled(Box)`
 
 `
-const Toolbar = styled(Flex) `
+const Toolbar = styled(Flex)`
 	height: 100%;
 	align-items: center;
 
@@ -140,7 +141,7 @@ const Toolbar = styled(Flex) `
 		i { padding-right: 4px; }
 	}
 `
-const SearchInfoItem = styled(Flex) `
+const SearchInfoItem = styled(Flex)`
 	div {
 		padding: 2px 6px;
 		color: #787878 ;
@@ -162,15 +163,15 @@ const SpinAnimated = posed.i({
 	pressable: true,
 	press: {
 		rotate: 180,
-		transition: ()=>{
+		transition: () => {
 			countSpin++
 			return {
-				to: 180*countSpin
+				to: 180 * countSpin
 			}
 		}
 	}
 })
-const SearchInfoSwitch = styled.div `
+const SearchInfoSwitch = styled.div`
 	font-size: 13px;
 	cursor: pointer;
 	user-select: none;
@@ -181,7 +182,7 @@ const SearchInfoSwitch = styled.div `
 		display: inline-block;
 	}
 `
-const SearchInfoTitle = styled(Flex) `
+const SearchInfoTitle = styled(Flex)`
 	justify-content: space-between;
 	align-items: center;
 	margin-bottom: 10px;
@@ -192,14 +193,14 @@ const SearchInfoPosed = posed(Box)({
 	focused: {
 		scale: 1,
 		opacity: 1,
-		transition: { scale: {from:.5 ,ease: 'backOut'} }
+		transition: { scale: { from: .5, ease: 'backOut' } }
 	},
 	blured: {
 		scale: 0,
 		opacity: 0
 	}
 })
-const SearchInfo = styled(SearchInfoPosed) `
+const SearchInfo = styled(SearchInfoPosed)`
 	position: absolute;
 	z-index: 999;
 	top: 56px;
@@ -221,12 +222,14 @@ const SearchInfo = styled(SearchInfoPosed) `
 	}
 `
 const SearchBarPose = posed(Flex)({
-	focused: { width: '90%', transition: {
-		type: 'spring', stiffness: 400, damping: 20
-	} }, 
-	blured: { width: '70%', transition: { ease:'backOut', duration: 400 } }
-}) 
-const SearchBarPosed = styled(SearchBarPose) `
+	focused: {
+		width: '90%', transition: {
+			type: 'spring', stiffness: 400, damping: 20
+		}
+	},
+	blured: { width: '70%', transition: { ease: 'backOut', duration: 400 } }
+})
+const SearchBarPosed = styled(SearchBarPose)`
 	height: 38px;
 	border: none;
 	background: #eeeeee;
@@ -260,12 +263,12 @@ const SearchBarPosed = styled(SearchBarPose) `
 		}
 	}
 `
-const SearchBar = styled(Flex) `
+const SearchBar = styled(Flex)`
 `
-const Search = styled(Flex) `
+const Search = styled(Flex)`
 	position: relative;
 `
-const Navbar = styled(Flex) `
+const Navbar = styled(Flex)`
 	ul {
 		display: flex;
 		flex-wrap: nowrap;
@@ -296,49 +299,49 @@ const Navbar = styled(Flex) `
 		}
 	}
 `
-const Brand = styled(Box) `
+const Brand = styled(Box)`
 	&,.a,img {
 		height: 100%
 	}
 `
-const Nav = styled(Flex) `
+const Nav = styled(Flex)`
 	height: 100%;
 	max-width: 1440px;
 `
-const HeaderWrapper = styled(Box) `
+const HeaderWrapper = styled(Box)`
 	height: 56px;
 	box-sizing: content-box;
 	border-bottom: 1px solid #eeeeee;
-` 
+`
 
 ////// mapState  mapDispatch //////
-const mapState = (state, props)=>({
-	focused: state.getIn(['header','focused']),
-	mouseEnter: state.getIn(['header','mouseEnter']),
-	searchInfoItems: state.getIn(['header','searchInfoItems']),
-	searchInfoPage: state.getIn(['header','searchInfoPage']),
-	searchInfoTotalPages: state.getIn(['header','searchInfoTotalPages']),
-	login: state.getIn(['login','login'])
+const mapState = (state, props) => ({
+	focused: state.getIn(['header', 'focused']),
+	mouseEnter: state.getIn(['header', 'mouseEnter']),
+	searchInfoItems: state.getIn(['header', 'searchInfoItems']),
+	searchInfoPage: state.getIn(['header', 'searchInfoPage']),
+	searchInfoTotalPages: state.getIn(['header', 'searchInfoTotalPages']),
+	login: state.getIn(['login', 'login'])
 })
 
-const mapDispatch = (dispatch, props)=>({
+const mapDispatch = (dispatch, props) => ({
 
-	handleFocus(list){
-		const getList = ()=>(
-			(dispatch, getState)=>{
+	handleFocus(list) {
+		const getList = () => (
+			(dispatch, getState) => {
 				axios.get('/api/headerList.json')
-				.then(res=>{
-					const { data } = res.data
-					const action = {
-						type: 'CHANGE_SEARCH_LIST',
-						data: fromJS(data),
-						totalPages: Math.ceil(data.length / 10)
-					}
-					dispatch(action)
-				})
-				.catch(err=>{
-					throw err
-				})
+					.then(res => {
+						const { data } = res.data
+						const action = {
+							type: 'CHANGE_SEARCH_LIST',
+							data: fromJS(data),
+							totalPages: Math.ceil(data.length / 10)
+						}
+						dispatch(action)
+					})
+					.catch(err => {
+						throw err
+					})
 			}
 		)
 		list.size === 0 && dispatch(getList()) // 派发了一个CHANGE_SEARCH_LIST的异步action 判断props.searchInfoItems存在就不派发了
@@ -347,26 +350,34 @@ const mapDispatch = (dispatch, props)=>({
 
 	},
 
-	handleBlur(){
+	handleBlur() {
 		const action = { type: 'SEARCH_BLURED' }
 		dispatch(action)
 	},
 
-	handleMouseEnter(){
+	handleMouseEnter() {
 		const action = { type: 'MOUSE_ENTER' }
 		dispatch(action)
 	},
 
-	handleMouseLeave(){
+	handleMouseLeave() {
 		const action = { type: 'MOUSE_LEAVE' }
 		dispatch(action)
 	},
 
-	handlePageChange(){
+	handlePageChange() {
 		const action = { type: 'CHANGE_PAGE' }
 		dispatch(action)
 	},
 
+	handleLogout() {
+		const action = { type: 'LOGOUT' }
+		const confirm = window.confirm('要退出登录吗？')
+		if (confirm) {
+			dispatch(action)
+		}
+	},
+
 })
 
-export default connect(mapState,mapDispatch)(Header)
+export default connect(mapState, mapDispatch)(Header)

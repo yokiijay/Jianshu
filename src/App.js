@@ -10,7 +10,7 @@ import Header from './Components/Header'
 
 //Pages
 import Home from './Pages/Home'
-import Detail from './Pages/Detail'
+import Detail from './Pages/Detail/loadable'
 import Login from './Pages/Login'
 
 class App extends Component {

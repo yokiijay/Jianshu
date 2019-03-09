@@ -99,12 +99,10 @@ const mapDispatch = (dispatch, props)=>({
       (dispatch, getState)=>{
         axios.get(`/api/login.json?account=${account}&password=${password}`)
         .then(res=>{
-          console.log(res.data.identify)
           if(res.data.identify){
             const action = { type: 'LOGIN' }
             const goOn = window.confirm('密码正确, 是否继续？')
             if(goOn){
-              alert('success')
               dispatch(action)
             }
           }else {
